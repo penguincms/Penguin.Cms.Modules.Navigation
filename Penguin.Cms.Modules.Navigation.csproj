@@ -19,11 +19,8 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.Extensions.FileProviders.Embedded" Version="3.0.0" />
+    <PackageReference Include="Penguin.Cms.Modules.Dynamic" Version="1.0.0" />
     <PackageReference Include="Penguin.Cms.Navigation.Repositories" Version="1.0.0" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Penguin.Cms.Modules.Core\Penguin.Cms.Modules.Core.csproj" />
-    <ProjectReference Include="..\Penguin.Cms.Modules.Dynamic\Penguin.Cms.Modules.Dynamic.csproj" />
   </ItemGroup>
   <Import Project="Penguin.Projects.Shared\Penguin.Projects.Shared.csproj" />
 </Project>

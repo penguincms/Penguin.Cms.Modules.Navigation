@@ -1,0 +1,57 @@
+﻿@model EditNavigationPageModel
+
+@{
+	Layout = "_Layout";
+}
+
+<form action="/Admin/Navigation/AddNavigation" method="Post">
+
+    @if (!(Model.BaseUri is null))
+	{
+    <input type="hidden" name="BaseUri" value="@Model.BaseUri" />
+    <property data-editable="False">
+        <name>
+            Parent
+        </name>
+        <value>
+            <span>@Model.BaseUri</span>
+        </value>
+    </property>
+	}
+    <property data-editable="True">
+        <name>
+            Name
+        </name>
+        <value>
+            <input type="text" name="NavigationMenuItem.Name" value="@Model.NavigationMenuItem.Name" autocomplete="off">
+        </value>
+    </property>
+    <property data-editable="True">
+        <name>
+            Display Text
+        </name>
+        <value>
+            <input type="text" name="NavigationMenuItem.Text" value="@Model.NavigationMenuItem.Text" autocomplete="off">
+        </value>
+    </property>
+    <property data-editable="True">
+        <name>
+            Link Url
+        </name>
+        <value>
+            <input type="text" name="NavigationMenuItem.Href" value="@Model.NavigationMenuItem.Href" autocomplete="off">
+        </value>
+    </property>
+    <property data-editable="True">
+        <name>
+            Icon
+        </name>
+        <value>
+            <partial name="~/Areas/Admin/Views/Edit/MaterialIconSelector.cshtml" model="@(new Penguin.Reflection.Serialization.Objects.MetaObject("NavigationMenuItem.Icon", Model.NavigationMenuItem.Icon ?? ""))" />
+        </value>
+    </property>
+
+    <button>
+        Submit
+    </button>
+</form>

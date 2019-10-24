@@ -1,0 +1,13 @@
+﻿@{
+	Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+@section Head {
+    @RenderSection("Head", false)
+}
+
+@section LeftPane {
+    <partial name="LeftPane" model="ServiceProvider.GetService<NavigationMenuRepository>().GetRootMenus()" />
+}
+
+@RenderBody()

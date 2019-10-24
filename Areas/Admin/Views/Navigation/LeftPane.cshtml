@@ -1,0 +1,129 @@
+﻿@model List<NavigationMenuItem>
+
+@{
+	Guid treeGuid = Guid.NewGuid();
+}
+
+@{
+	Func<NavigationMenuItem, IHtmlContent> Render = null;
+	Render = this.Helper((NavigationMenuItem thisNav) =>
+
+    @<text>
+        @{
+		if (!SecurityProvider.CheckAccess(thisNav, PermissionTypes.Write))
+		{
+			return;
+		}
+
+		string IconName = thisNav.Icon;
+
+		if (string.IsNullOrWhiteSpace(IconName))
+		{
+			if (thisNav.Children.Any())
+			{
+				IconName = "folder";
+			}
+			else
+			{
+				IconName = "link";
+			}
+		}
+        }
+        <li data-url="@thisNav.Uri" data-jstree='{"icon":"/Images/Material Icons/web/ic_@(IconName)_white_18dp.png"}' data-hascontent="@(!string.IsNullOrWhiteSpace(thisNav.Href))" data-id="@(thisNav._Id)">
+            @{
+			string DisplayText = thisNav.Uri;
+
+			if (DisplayText.Length > 1 && DisplayText.EndsWith("/"))
+			{
+				DisplayText = DisplayText.ToLast("/");
+			}
+
+			if (DisplayText.Length > 1)
+			{
+				DisplayText = DisplayText.FromLast("/");
+			}
+            }
+
+            @DisplayText
+
+            @if (thisNav.Children.Any())
+			{
+            <ul>
+                @foreach (NavigationMenuItem thischild in thisNav.Children)
+					{
+                @Render(thischild)
+					}
+            </ul>
+			}
+        </li>
+    </text>
+	);
+}
+
+<div id="@treeGuid">
+    <ul>
+        <li>
+            /
+            <ul>
+                @foreach (NavigationMenuItem thisNav in Model)
+				{
+                @Render(thisNav)
+				}
+            </ul>
+        </li>
+    </ul>
+</div>
+<script>
+	function customMenu(node) {
+		var items = {
+			editItem: { // The "rename" menu item
+				label: "Edit",
+				action: function () {
+					window.location = '/Admin/Navigation/EditNavigation?Url=' + node.data.url;
+				}
+			},
+			addChildItem: { // The "rename" menu item
+				label: "Add Child",
+				action: function () {
+                    window.location = (typeof node.data.url !== 'undefined') ? '/Admin/Navigation/AddNavigation?Url=' + node.data.url : '/Admin/Navigation/AddNavigation';
+				}
+			},
+			deleteItem: { // The "delete" menu item
+				label: "Delete",
+				action: function () {
+					if (confirm('Are you sure you want to delete ' + node.data.url + ' and everything beneath it?')) {
+						window.location = '/Admin/Navigation/DeleteNavigation?Id=' + node.data.id;
+					}
+				}
+			}
+		};
+
+		return items;
+	}
+
+	$('#@treeGuid')
+		.jstree({
+			plugins: ["contextmenu"],
+			contextmenu: { items: customMenu },
+			core: {
+				dblclick_toggle: false,
+				themes: {
+					name: "default-dark",
+					dots: true,
+					icons: true,
+					variant: "large"
+				}
+			}
+		});
+
+	$('#@treeGuid').bind("select_node.jstree", function (e, data) {
+		if (data.event.button !== 2) {
+			if (data.node.children.length === 0) {
+				Site.ShowLoader();
+				window.location = '/Admin/Navigation/EditNavigation?Url=' + data.node.data.url;
+			} else {
+				return data.instance.toggle_node(data.node);
+			}
+		}
+	});
+</script>

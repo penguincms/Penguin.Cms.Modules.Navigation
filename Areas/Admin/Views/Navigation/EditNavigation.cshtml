@@ -1,0 +1,46 @@
+﻿@model EditNavigationPageModel
+
+@{
+	Layout = "_Layout";
+}
+
+<a href="/Admin/Edit/@(typeof(NavigationMenuItem).FullName)/@Model.NavigationMenuItem._Id">Advanced</a>
+
+<form action="/Admin/Navigation/EditNavigation" method="Post">
+    <input type="hidden" name="NavigationMenuItem._Id" value="@Model.NavigationMenuItem._Id" />
+    <property data-editable="True">
+        <name>
+            Name
+        </name>
+        <value>
+            <input type="text" name="NavigationMenuItem.Name" value="@Model.NavigationMenuItem.Name" autocomplete="off">
+        </value>
+    </property>
+    <property data-editable="True">
+        <name>
+            Display Text
+        </name>
+        <value>
+            <input type="text" name="NavigationMenuItem.Text" value="@Model.NavigationMenuItem.Text" autocomplete="off">
+        </value>
+    </property>
+    <property data-editable="True">
+        <name>
+            Link Url
+        </name>
+        <value>
+            <input type="text" name="NavigationMenuItem.Href" value="@Model.NavigationMenuItem.Href" autocomplete="off">
+        </value>
+    </property>
+    <property data-editable="True">
+        <name>
+            Icon
+        </name>
+        <value>
+            <partial name="~/Areas/Admin/Views/Edit/MaterialIconSelector.cshtml" model="@(new Penguin.Reflection.Serialization.Objects.MetaObject("NavigationMenuItem.Icon", Model.NavigationMenuItem.Icon ?? ""))" />
+        </value>
+    </property>
+    <button>
+        Submit
+    </button>
+</form>

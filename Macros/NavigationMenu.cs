@@ -15,36 +15,41 @@ namespace Penguin.Cms.Modules.Navigation.Macros
     [SuppressMessage("Microsoft.Naming", "CA1724:TypeNamesShouldNotMatchNamespaces")]
     public class NavigationMenu : IMessageHandler<Updated<NavigationMenuItem>>, IMessageHandler<Created<NavigationMenuItem>>, IMessageHandler<Penguin.Messaging.Application.Messages.Startup>, IMacroProvider
     {
+        private static readonly List<Macro> TemplateMacros = new List<Macro>();
         protected NavigationMenuRepository NavigationMenuRepository { get; set; }
 
         protected IViewRenderService ViewRenderService { get; set; }
 
-        private static readonly List<Macro> TemplateMacros = new List<Macro>();
-
         public NavigationMenu(IViewRenderService viewRenderService, NavigationMenuRepository navigationMenuRepository)
         {
-            ViewRenderService = viewRenderService;
-            NavigationMenuRepository = navigationMenuRepository;
+            this.ViewRenderService = viewRenderService;
+            this.NavigationMenuRepository = navigationMenuRepository;
         }
 
         public void AcceptMessage(Updated<NavigationMenuItem> page)
         {
-            Refresh();
+            this.Refresh();
         }
 
         public void AcceptMessage(Created<NavigationMenuItem> page)
         {
-            Refresh();
+            this.Refresh();
         }
 
-        public void AcceptMessage(Penguin.Messaging.Application.Messages.Startup startup) => Refresh();
+        public void AcceptMessage(Penguin.Messaging.Application.Messages.Startup startup)
+        {
+            this.Refresh();
+        }
 
-        public List<Macro> GetMacros(object o) => TemplateMacros;
+        public List<Macro> GetMacros(object o)
+        {
+            return TemplateMacros;
+        }
 
         [SuppressMessage("Design", "CA1054:Uri parameters should not be strings")]
         public HtmlString Render(string Uri)
         {
-            NavigationMenuItem toRender = NavigationMenuRepository.GetByUri(Uri);
+            NavigationMenuItem toRender = this.NavigationMenuRepository.GetByUri(Uri);
 
             if (toRender is null)
             {
@@ -77,7 +82,7 @@ namespace Penguin.Cms.Modules.Navigation.Macros
             {
                 TemplateMacros.Clear();
 
-                IEnumerable<NavigationMenuItem> allNavs = NavigationMenuRepository;
+                IEnumerable<NavigationMenuItem> allNavs = this.NavigationMenuRepository;
 
                 foreach (NavigationMenuItem thisNav in allNavs)
                 {

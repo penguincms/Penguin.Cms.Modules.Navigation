@@ -12,12 +12,12 @@ namespace Penguin.Cms.Modules.Navigation.ComponentProviders
 
         public DatabaseNavigationMenuProvider(NavigationMenuRepository navigationMenuRepository)
         {
-            NavigationMenuRepository = navigationMenuRepository;
+            this.NavigationMenuRepository = navigationMenuRepository;
         }
 
         public IEnumerable<INavigationMenu> GetComponents(string MenuName)
         {
-            yield return NavigationMenuRepository.GetByName(MenuName);
+            yield return this.NavigationMenuRepository.GetByName(MenuName);
         }
     }
 }

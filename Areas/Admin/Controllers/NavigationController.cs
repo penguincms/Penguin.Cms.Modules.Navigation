@@ -24,9 +24,9 @@ namespace Penguin.Cms.Modules.Navigation.Areas.Admin.Controllers
 
         public NavigationController(NavigationMenuRepository navigationMenuRepository, ISecurityProvider<NavigationMenuItem> securityProvider, IServiceProvider serviceProvider, IUserSession userSession) : base(serviceProvider)
         {
-            SecurityProvider = securityProvider;
-            NavigationMenuRepository = navigationMenuRepository;
-            UserSession = userSession;
+            this.SecurityProvider = securityProvider;
+            this.NavigationMenuRepository = navigationMenuRepository;
+            this.UserSession = userSession;
         }
 
         public ActionResult AddNavigation(string? Url = null)
@@ -49,7 +49,7 @@ namespace Penguin.Cms.Modules.Navigation.Areas.Admin.Controllers
                 throw new NullReferenceException("Posted NavigationMEnuItem is null");
             }
 
-            using (NavigationMenuRepository.WriteContext())
+            using (this.NavigationMenuRepository.WriteContext())
             {
                 if (!string.IsNullOrWhiteSpace(model.BaseUri))
                 {
@@ -66,7 +66,7 @@ namespace Penguin.Cms.Modules.Navigation.Areas.Admin.Controllers
 
         public ActionResult DeleteNavigation(int id)
         {
-            using (NavigationMenuRepository.WriteContext())
+            using (this.NavigationMenuRepository.WriteContext())
             {
                 NavigationMenuItem thisNavigation = this.NavigationMenuRepository.Find(id) ?? throw new NullReferenceException($"Can not find NavigationMenuItem with id {id}");
 
@@ -80,9 +80,9 @@ namespace Penguin.Cms.Modules.Navigation.Areas.Admin.Controllers
         {
             EditNavigationPageModel model = new EditNavigationPageModel(Url, this.NavigationMenuRepository.GetByUri(Url));
 
-            if (model.NavigationMenuItem is null || !SecurityProvider.CheckAccess(model.NavigationMenuItem, PermissionTypes.Write))
+            if (model.NavigationMenuItem is null || !this.SecurityProvider.CheckAccess(model.NavigationMenuItem, PermissionTypes.Write))
             {
-                return Content("");
+                return this.Content("");
             }
 
             return this.View(model);
@@ -101,11 +101,11 @@ namespace Penguin.Cms.Modules.Navigation.Areas.Admin.Controllers
                 throw new NullReferenceException(nameof(model.NavigationMenuItem));
             }
 
-            using (NavigationMenuRepository.WriteContext())
+            using (this.NavigationMenuRepository.WriteContext())
             {
                 NavigationMenuItem thisNavigation = this.NavigationMenuRepository.Find(model.NavigationMenuItem);
 
-                if (SecurityProvider.CheckAccess(thisNavigation, PermissionTypes.Write))
+                if (this.SecurityProvider.CheckAccess(thisNavigation, PermissionTypes.Write))
                 {
                     thisNavigation.Href = model.NavigationMenuItem.Href;
                     thisNavigation.Name = model.NavigationMenuItem.Name;

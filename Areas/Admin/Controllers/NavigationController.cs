@@ -20,13 +20,11 @@ namespace Penguin.Cms.Modules.Navigation.Areas.Admin.Controllers
         protected NavigationMenuRepository NavigationMenuRepository { get; set; }
 
         protected ISecurityProvider<NavigationMenuItem> SecurityProvider { get; set; }
-        protected IUserSession UserSession { get; set; }
 
-        public NavigationController(NavigationMenuRepository navigationMenuRepository, ISecurityProvider<NavigationMenuItem> securityProvider, IServiceProvider serviceProvider, IUserSession userSession) : base(serviceProvider)
+        public NavigationController(NavigationMenuRepository navigationMenuRepository, ISecurityProvider<NavigationMenuItem> securityProvider, IServiceProvider serviceProvider, IUserSession userSession) : base(serviceProvider, userSession)
         {
             this.SecurityProvider = securityProvider;
             this.NavigationMenuRepository = navigationMenuRepository;
-            this.UserSession = userSession;
         }
 
         public ActionResult AddNavigation(string? Url = null)

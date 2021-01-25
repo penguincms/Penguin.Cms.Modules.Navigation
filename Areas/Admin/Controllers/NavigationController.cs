@@ -14,7 +14,6 @@ namespace Penguin.Cms.Modules.Navigation.Areas.Admin.Controllers
 {
     [RequiresRole(RoleNames.CONTENT_MANAGER)]
     [SuppressMessage("Design", "CA1054:Uri parameters should not be strings")]
-    [SuppressMessage("Globalization", "CA1303:Do not pass literals as localized parameters")]
     public class NavigationController : ObjectManagementController<NavigationMenuItem>
     {
         protected NavigationMenuRepository NavigationMenuRepository { get; set; }

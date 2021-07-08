@@ -13,7 +13,6 @@ using System.Diagnostics.CodeAnalysis;
 namespace Penguin.Cms.Modules.Navigation.Areas.Admin.Controllers
 {
     [RequiresRole(RoleNames.CONTENT_MANAGER)]
-    [SuppressMessage("Design", "CA1054:Uri parameters should not be strings")]
     public class NavigationController : ObjectManagementController<NavigationMenuItem>
     {
         protected NavigationMenuRepository NavigationMenuRepository { get; set; }

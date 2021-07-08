@@ -46,7 +46,6 @@ namespace Penguin.Cms.Modules.Navigation.Macros
             return TemplateMacros;
         }
 
-        [SuppressMessage("Design", "CA1054:Uri parameters should not be strings")]
         public HtmlString Render(string Uri)
         {
             NavigationMenuItem toRender = this.NavigationMenuRepository.GetByUri(Uri);

@@ -12,14 +12,8 @@ namespace Penguin.Cms.Modules.Navigation.Controllers
             this.NavigationMenuRepository = navigationMenuRepository;
         }
 
-        public ActionResult FindCurrentNav()
-        {
-            return this.View(this.NavigationMenuRepository.GetByHref(this.Request.Path.Value));
-        }
+        public ActionResult FindCurrentNav() => this.View(this.NavigationMenuRepository.GetByHref(this.Request.Path.Value));
 
-        public ActionResult SelectNav(string MenuName)
-        {
-            return this.View(this.NavigationMenuRepository.GetRootByName(MenuName));
-        }
+        public ActionResult SelectNav(string MenuName) => this.View(this.NavigationMenuRepository.GetRootByName(MenuName));
     }
 }

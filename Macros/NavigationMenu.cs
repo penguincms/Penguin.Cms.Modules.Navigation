@@ -26,25 +26,13 @@ namespace Penguin.Cms.Modules.Navigation.Macros
             this.NavigationMenuRepository = navigationMenuRepository;
         }
 
-        public void AcceptMessage(Updated<NavigationMenuItem> page)
-        {
-            this.Refresh();
-        }
+        public void AcceptMessage(Updated<NavigationMenuItem> page) => this.Refresh();
 
-        public void AcceptMessage(Created<NavigationMenuItem> page)
-        {
-            this.Refresh();
-        }
+        public void AcceptMessage(Created<NavigationMenuItem> page) => this.Refresh();
 
-        public void AcceptMessage(Penguin.Messaging.Application.Messages.Startup startup)
-        {
-            this.Refresh();
-        }
+        public void AcceptMessage(Penguin.Messaging.Application.Messages.Startup startup) => this.Refresh();
 
-        public List<Macro> GetMacros(object o)
-        {
-            return TemplateMacros;
-        }
+        public List<Macro> GetMacros(object o) => TemplateMacros;
 
         public HtmlString Render(string Uri)
         {

@@ -8,7 +8,6 @@ using Penguin.Security.Abstractions;
 using Penguin.Security.Abstractions.Interfaces;
 using Penguin.Web.Security.Attributes;
 using System;
-using System.Diagnostics.CodeAnalysis;
 
 namespace Penguin.Cms.Modules.Navigation.Areas.Admin.Controllers
 {

@@ -1,5 +1,4 @@
 ﻿using Penguin.Cms.Navigation;
-using System.Diagnostics.CodeAnalysis;
 
 namespace Penguin.Cms.Modules.Navigation.Areas.Admin.Models
 {

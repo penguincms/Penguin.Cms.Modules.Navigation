@@ -5,7 +5,7 @@ using Penguin.Cms.Navigation;
 using Penguin.Cms.Navigation.Repositories;
 using Penguin.Messaging.Abstractions.Interfaces;
 using Penguin.Messaging.Persistence.Messages;
-using Penguin.Web.Mvc.Abstractions;
+using Penguin.Web.Mvc.Abstractions.Interfaces;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Threading.Tasks;
@@ -26,13 +26,25 @@ namespace Penguin.Cms.Modules.Navigation.Macros
             this.NavigationMenuRepository = navigationMenuRepository;
         }
 
-        public void AcceptMessage(Updated<NavigationMenuItem> page) => this.Refresh();
+        public void AcceptMessage(Updated<NavigationMenuItem> page)
+        {
+            this.Refresh();
+        }
 
-        public void AcceptMessage(Created<NavigationMenuItem> page) => this.Refresh();
+        public void AcceptMessage(Created<NavigationMenuItem> page)
+        {
+            this.Refresh();
+        }
 
-        public void AcceptMessage(Penguin.Messaging.Application.Messages.Startup startup) => this.Refresh();
+        public void AcceptMessage(Penguin.Messaging.Application.Messages.Startup startup)
+        {
+            this.Refresh();
+        }
 
-        public List<Macro> GetMacros(object o) => TemplateMacros;
+        public List<Macro> GetMacros(object o)
+        {
+            return TemplateMacros;
+        }
 
         public HtmlString Render(string Uri)
         {

@@ -9,17 +9,17 @@ namespace Penguin.Cms.Modules.Navigation.Controllers
 
         public NavigationController(NavigationMenuRepository navigationMenuRepository)
         {
-            this.NavigationMenuRepository = navigationMenuRepository;
+            NavigationMenuRepository = navigationMenuRepository;
         }
 
         public ActionResult FindCurrentNav()
         {
-            return this.View(this.NavigationMenuRepository.GetByHref(this.Request.Path.Value));
+            return View(NavigationMenuRepository.GetByHref(Request.Path.Value));
         }
 
         public ActionResult SelectNav(string MenuName)
         {
-            return this.View(this.NavigationMenuRepository.GetRootByName(MenuName));
+            return View(NavigationMenuRepository.GetRootByName(MenuName));
         }
     }
 }

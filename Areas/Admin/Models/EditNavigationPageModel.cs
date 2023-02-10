@@ -2,7 +2,6 @@
 
 namespace Penguin.Cms.Modules.Navigation.Areas.Admin.Models
 {
-
     public class EditNavigationPageModel
     {
         public string? BaseUri { get; set; }
@@ -15,8 +14,8 @@ namespace Penguin.Cms.Modules.Navigation.Areas.Admin.Models
 
         public EditNavigationPageModel(string? baseUri, NavigationMenuItem navigationMenuItem)
         {
-            this.BaseUri = baseUri;
-            this.NavigationMenuItem = navigationMenuItem;
+            BaseUri = baseUri;
+            NavigationMenuItem = navigationMenuItem;
         }
     }
 }

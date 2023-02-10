@@ -20,15 +20,15 @@ namespace Penguin.Cms.Modules.Navigation.Areas.Admin.Controllers
 
         public NavigationController(NavigationMenuRepository navigationMenuRepository, ISecurityProvider<NavigationMenuItem> securityProvider, IServiceProvider serviceProvider, IUserSession userSession) : base(serviceProvider, userSession)
         {
-            this.SecurityProvider = securityProvider;
-            this.NavigationMenuRepository = navigationMenuRepository;
+            SecurityProvider = securityProvider;
+            NavigationMenuRepository = navigationMenuRepository;
         }
 
         public ActionResult AddNavigation(string? Url = null)
         {
-            EditNavigationPageModel model = new EditNavigationPageModel(Url, new NavigationMenuItem());
+            EditNavigationPageModel model = new(Url, new NavigationMenuItem());
 
-            return this.View(model);
+            return View(model);
         }
 
         [HttpPost]
@@ -44,43 +44,40 @@ namespace Penguin.Cms.Modules.Navigation.Areas.Admin.Controllers
                 throw new NullReferenceException("Posted NavigationMEnuItem is null");
             }
 
-            using (this.NavigationMenuRepository.WriteContext())
+            using (NavigationMenuRepository.WriteContext())
             {
                 if (!string.IsNullOrWhiteSpace(model.BaseUri))
                 {
-                    this.NavigationMenuRepository.AddChild(model.BaseUri, model.NavigationMenuItem);
+                    NavigationMenuRepository.AddChild(model.BaseUri, model.NavigationMenuItem);
                 }
                 else
                 {
-                    this.NavigationMenuRepository.AddOrUpdate(model.NavigationMenuItem);
+                    NavigationMenuRepository.AddOrUpdate(model.NavigationMenuItem);
                 }
             }
 
-            return this.Redirect("/Admin/Navigation/Index");
+            return Redirect("/Admin/Navigation/Index");
         }
 
         public ActionResult DeleteNavigation(int id)
         {
-            using (this.NavigationMenuRepository.WriteContext())
+            using (NavigationMenuRepository.WriteContext())
             {
-                NavigationMenuItem thisNavigation = this.NavigationMenuRepository.Find(id) ?? throw new NullReferenceException($"Can not find NavigationMenuItem with id {id}");
+                NavigationMenuItem thisNavigation = NavigationMenuRepository.Find(id) ?? throw new NullReferenceException($"Can not find NavigationMenuItem with id {id}");
 
                 thisNavigation.DateDeleted = DateTime.Now;
             }
 
-            return this.Redirect("/Admin/Navigation/Index");
+            return Redirect("/Admin/Navigation/Index");
         }
 
         public ActionResult EditNavigation(string Url)
         {
-            EditNavigationPageModel model = new EditNavigationPageModel(Url, this.NavigationMenuRepository.GetByUri(Url));
+            EditNavigationPageModel model = new(Url, NavigationMenuRepository.GetByUri(Url));
 
-            if (model.NavigationMenuItem is null || !this.SecurityProvider.CheckAccess(model.NavigationMenuItem, PermissionTypes.Write))
-            {
-                return this.Content("");
-            }
-
-            return this.View(model);
+            return model.NavigationMenuItem is null || !SecurityProvider.CheckAccess(model.NavigationMenuItem, PermissionTypes.Write)
+                ? Content("")
+                : View(model);
         }
 
         [HttpPost]
@@ -96,22 +93,32 @@ namespace Penguin.Cms.Modules.Navigation.Areas.Admin.Controllers
                 throw new NullReferenceException(nameof(model.NavigationMenuItem));
             }
 
-            using (this.NavigationMenuRepository.WriteContext())
+            using (NavigationMenuRepository.WriteContext())
             {
-                NavigationMenuItem thisNavigation = this.NavigationMenuRepository.Find(model.NavigationMenuItem);
+                NavigationMenuItem thisNavigation = NavigationMenuRepository.Find(model.NavigationMenuItem);
 
-                if (this.SecurityProvider.CheckAccess(thisNavigation, PermissionTypes.Write))
+                if (SecurityProvider.CheckAccess(thisNavigation, PermissionTypes.Write))
                 {
                     thisNavigation.Href = model.NavigationMenuItem.Href;
                     thisNavigation.Name = model.NavigationMenuItem.Name;
                     thisNavigation.Text = model.NavigationMenuItem.Text;
                     thisNavigation.Icon = model.NavigationMenuItem.Icon;
 
-                    this.NavigationMenuRepository.AddOrUpdate(thisNavigation);
+                    NavigationMenuRepository.AddOrUpdate(thisNavigation);
                 }
             }
 
-            return this.Redirect("/Admin/Navigation/Index");
+            return Redirect("/Admin/Navigation/Index");
+        }
+
+        public ActionResult AddNavigation(Uri Url)
+        {
+            throw new NotImplementedException();
+        }
+
+        public ActionResult EditNavigation(Uri Url)
+        {
+            throw new NotImplementedException();
         }
     }
 }

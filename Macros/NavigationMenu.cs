@@ -16,6 +16,7 @@ namespace Penguin.Cms.Modules.Navigation.Macros
     public class NavigationMenu : IMessageHandler<Updated<NavigationMenuItem>>, IMessageHandler<Created<NavigationMenuItem>>, IMessageHandler<Penguin.Messaging.Application.Messages.Startup>, IMacroProvider
     {
         private static readonly List<Macro> TemplateMacros = new();
+
         protected NavigationMenuRepository NavigationMenuRepository { get; set; }
 
         protected IViewRenderService ViewRenderService { get; set; }
